@@ -43,9 +43,13 @@ function PrivateChat() {
   const handleClick = (e) => {
     e.preventDefault();
     
-    socket.emit('private.message', { message: message, receiver: receiver.socketId });
+    socket.emit('private.message', { message: message, receiver: receiver.socketId, source: socket.id });
 
     setMessages([...messages, {value: message, received: false}]);
+  }
+  
+  const handleBack = () => {
+    history.goBack();
   }
 
   return (
@@ -57,11 +61,11 @@ function PrivateChat() {
                 <div className="chat">
                   <div className="chat-container">
                     <div className="user-bar">
-                      <div className="back">
+                      <div onClick={handleBack} className="back">
                         <i className="zmdi zmdi-arrow-left"></i>
                       </div>
                       <div className="avatar">
-                        <img src="https://media-exp1.licdn.com/dms/image/C4D03AQEUg5BgFbZvTw/profile-displayphoto-shrink_200_200/0/1610894905893?e=1623888000&v=beta&t=NzQdP9R1_aMNJR3emRSOb6ypNdizX67hNmEJxMLo06g" alt="Avatar" />
+                        <img src={receiver.avatar} alt="Avatar" />
                       </div>
                       <div className="name">
                         <span>{receiver.username}</span>

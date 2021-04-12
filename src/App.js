@@ -1,4 +1,4 @@
-import Home from './components/Home';
+import Home from './pages/Home';
 import PrivateChat from './pages/PrivateChat';
 
 import { Router, Switch, Route } from "react-router-dom";

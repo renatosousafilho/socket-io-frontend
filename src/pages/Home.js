@@ -5,8 +5,8 @@ import './Home.css';
 
 import UsersContext from '../context/UsersContext';
 
-import UserItem from './UserItem'
-import Form from './Form'
+import UserItem from '../components/UserItem'
+import Form from '../components/Form'
 
 function Home() {
   const [currentUser, setCurrentUser] = useState('');
@@ -14,8 +14,9 @@ function Home() {
 
   const { setCurrentUsers } = useContext(UsersContext);
 
-  
   useEffect(() => {
+    // console.log('voltou');
+    // console.log(currentUser);
     socketClient.on("chat.updateUsers", (data) => {
       const me = data.find((u) => u.socketId === socketClient.id);
       if (me) setCurrentUser(me.username);
@@ -28,7 +29,7 @@ function Home() {
   return (
     <>
       <div className="phone-status-bar">
-        <h1 className="heading-primary">WhatsApp</h1>
+        <h1 className="heading-primary">TrybeZap</h1>
         <div className="phone-status-bar__right-icon">
           <i className="fa fa-search" aria-hidden="true"></i>
           <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
