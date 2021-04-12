@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // import { Container } from './styles';
 
 function UserItem(user) {
   return (
-    <a href='/chat/<%= user.id %>' className="chat-list">
+    <Link to={`/chat/${user.username}`} className="chat-list">
       <div className="person-profile">
         <img
           src={user.avatar}
@@ -15,7 +16,7 @@ function UserItem(user) {
         </div>
       </div>
       <p className="last-chat-time">12:00 pm</p>
-    </a>
+    </Link>
   );
 }
 

@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import socketClient from '../utils/socketClient';
 
 import './Home.css';
 
-import data from '../data';
+import UsersContext from '../context/UsersContext';
 
 import UserItem from './UserItem'
 import Form from './Form'
 
 function Home() {
+  const [currentUser, setCurrentUser] = useState('');
   const [users, setUsers] = useState([]);
+
+  const { setCurrentUsers } = useContext(UsersContext);
+
   
   useEffect(() => {
     socketClient.on("chat.updateUsers", (data) => {
+      const me = data.find((u) => u.socketId === socketClient.id);
+      if (me) setCurrentUser(me.username);
       const updatedUsers = data.filter((u) => u.socketId !== socketClient.id);
       setUsers(updatedUsers);
+      setCurrentUsers(data);
     });
-  }, []);
-
+  }, [setCurrentUsers]);
 
   return (
     <>
@@ -29,7 +35,6 @@ function Home() {
         </div>
       </div>
       
-      
       <div className="chat-status-call">
         <div className="chat-container">
           <div className="contact-list">
@@ -38,7 +43,7 @@ function Home() {
             </i>
           </div>
 
-          <Form />
+          {currentUser ? currentUser : <Form />}
 
           {users.map((user) => (
             <UserItem {...user} key={user.username} />
