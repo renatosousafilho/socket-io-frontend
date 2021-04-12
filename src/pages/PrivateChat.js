@@ -2,14 +2,14 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import './PrivateChat.css';
+// import './PrivateChat.css';
 
 import UsersContext from '../context/UsersContext';
 import socket from '../utils/socketClient';
 
 import history from '../services/history'
 
-import MessageItem from '../components/chat/MessageItem';
+// import MessageItem from '../components/chat/MessageItem';
 
 // import { Container } from './styles';
 
@@ -85,7 +85,7 @@ function PrivateChat() {
                       <div className="conversation-container">
                         {messages.map(({value, received}, index) => (
                           <span key={index}>
-                            <MessageItem message={value} received={received} /> 
+                            
                           </span>
                         ))}
                       </div>

@@ -1,22 +1,29 @@
-import Home from './pages/Home';
+// import Home from './pages/Home';
+import Chat from './pages/Chat';
 import PrivateChat from './pages/PrivateChat';
 
 import { Router, Switch, Route } from "react-router-dom";
 import UsersProvider from './context/UsersProvider';
 
+import { ChatScreenProvider } from './contexts/chat-screen';
+import { ContactsDataProvider } from './contexts/contacts';
+
 import history from './services/history'
 
 function App() {
   return (
-    <UsersProvider>
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/chat/:username" component={PrivateChat} />
-        </Switch>
-      </Router>
-    </UsersProvider>
-    
+    <ChatScreenProvider>
+      <ContactsDataProvider>
+        <UsersProvider>
+          <Router history={history}>
+            <Switch>
+              <Route exact path="/" component={Chat} />
+              <Route path="/chat/:username" component={PrivateChat} />
+            </Switch>
+          </Router>
+        </UsersProvider>
+      </ContactsDataProvider>
+    </ChatScreenProvider>
   );
 }
   
