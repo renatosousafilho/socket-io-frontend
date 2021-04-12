@@ -25,14 +25,9 @@ function reducer(state, action) {
     case 'SET_CONTACTS_DATA':
       return {
         ...state,
+        id: action.payload.id,
         name: action.payload.name,
         avatar: action.payload.avatar,
-        lastMessage: action.payload.lastMessage,
-        timeLastMessage: action.payload.timeLastMessage,
-        lastSeen: action.payload.lastSeen,
-        pinned: action.payload.pinned,
-        mute: action.payload.mute,
-        unreadMessages: action.payload.unreadMessages,
       };
     default:
       return state;

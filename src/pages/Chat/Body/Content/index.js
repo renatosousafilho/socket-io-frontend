@@ -6,6 +6,8 @@ import MessageBox from '../../../../components/MessageBox';
 
 import { useContactsState } from '../../../../contexts/contacts';
 
+import socketClient from '../../../../utils/socketClient';
+
 import { IconButton } from '@material-ui/core';
 import {
   Search,
@@ -18,20 +20,20 @@ import {
 } from '@material-ui/icons';
 
 function Content({ user }) {
-  const { avatar, name, lastSeen } = useContactsState();
+  const { id, avatar, name } = useContactsState();
 
-  const initialListMessages = [
-     {
-      author: 123,
-      body: 'In ad voluptate sit Lorem enim ullamco magna pariatur deserunt. Laborum adipisicing dolore eiusmod ad minim fugiat. Quis et ad qui ea minim esse eiusmod deserunt laborum nulla ex velit culpa deserunt. Non consectetur pariatur Lorem id cupidatat aute ex dolore proident elit.',
-    },
-    {
-      author: 1234,
-      body: 'In ad voluptate sit Lorem enim ullamco magna pariatur deserunt. Laborum adipisicing dolore eiusmod ad minim fugiat. Quis et ad qui ea minim esse eiusmod deserunt laborum nulla ex velit culpa deserunt. Non consectetur pariatur Lorem id cupidatat aute ex dolore proident elit.',
-    },
-  ];
+  // const initialListMessages = [
+  //    {
+  //     author: 123,
+  //     body: 'In ad voluptate sit Lorem enim ullamco magna pariatur deserunt. Laborum adipisicing dolore eiusmod ad minim fugiat. Quis et ad qui ea minim esse eiusmod deserunt laborum nulla ex velit culpa deserunt. Non consectetur pariatur Lorem id cupidatat aute ex dolore proident elit.',
+  //   },
+  //   {
+  //     author: 1234,
+  //     body: 'In ad voluptate sit Lorem enim ullamco magna pariatur deserunt. Laborum adipisicing dolore eiusmod ad minim fugiat. Quis et ad qui ea minim esse eiusmod deserunt laborum nulla ex velit culpa deserunt. Non consectetur pariatur Lorem id cupidatat aute ex dolore proident elit.',
+  //   },
+  // ];
 
-  const [listOfMessages, setListOfMessages] = useState(initialListMessages);
+  const [listOfMessages, setListOfMessages] = useState([]);
   const [text, setText] = useState('');
 
   const body = useRef(null);
@@ -42,9 +44,19 @@ function Content({ user }) {
     }
   }, [avatar, listOfMessages]);
 
+  useEffect(() => {
+    socketClient.on('private.message', ({ body, author}) => {
+      console.log(body, author);
+      setListOfMessages([...listOfMessages, { body, author }]);
+    });
+  }, [])
+
   function sendMessage(e) {
     e.preventDefault();
-    setListOfMessages([...listOfMessages, { author: 1234, body: text }]);
+    setListOfMessages([...listOfMessages, { author: user.id, body: text }]);
+
+    socketClient.emit('private.message', { message: text, receiver: id, origin: user.id });
+
     setText('');
   }
 
@@ -56,7 +68,7 @@ function Content({ user }) {
           <img src={avatar} alt={name} className="body__profile-picture" />
           <div className="body__texts">
             <h2 className="body__name">{name}</h2>
-            <span className="body__lastSeen">{`last seen today ${lastSeen}`}</span>
+            <span className="body__lastSeen">{`last seen today`}</span>
           </div>
         </div>
         <div className="body__options">
@@ -73,8 +85,8 @@ function Content({ user }) {
       </header>
 
       <section ref={body} className="body__wallpaper">
-         {listOfMessages.map((msg) => (
-          <MessageBox key={msg.body} msg={msg} user={user} />
+         {listOfMessages.map((msg, index) => (
+          <MessageBox key={index} msg={msg} user={user} />
         ))}
       </section>
 

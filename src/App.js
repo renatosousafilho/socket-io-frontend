@@ -1,4 +1,3 @@
-// import Home from './pages/Home';
 import Chat from './pages/Chat';
 import PrivateChat from './pages/PrivateChat';
 
@@ -18,7 +17,6 @@ function App() {
           <Router history={history}>
             <Switch>
               <Route exact path="/" component={Chat} />
-              <Route path="/chat/:username" component={PrivateChat} />
             </Switch>
           </Router>
         </UsersProvider>

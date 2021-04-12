@@ -8,10 +8,14 @@ import { useChatScreenState } from '../../../contexts/chat-screen';
 function Body({user}) {
   const { display } = useChatScreenState();
 
+  console.log(user);
+
   return (
     <>
       {display ? (
-        <Chat user={user} />
+        <>
+          <Chat user={user} />
+        </>
       ) : (
         <InitialScreen />
       )}

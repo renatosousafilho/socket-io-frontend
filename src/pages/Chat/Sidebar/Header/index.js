@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconButton, Avatar } from '@material-ui/core';
-import { DonutLarge, Chat, MoreVert } from '@material-ui/icons';
+import { MoreVert } from '@material-ui/icons';
+import socketClient from '../../../../utils/socketClient';
 
 import './styles.scss';
 
 
-function Header() {
+function Header({user}) {
   const [openDropDown, setOpenDropDown] = useState(false);
-
+  
   return (
     <header className="sidebar__header">
-      <Avatar className="sidebar__avatar"/>
+      {user.avatar 
+        ? <img src={user.avatar} alt="avatar" className='body__profile-picture' />
+        : <Avatar className="sidebar__avatar"/>
+      }
       <div className="sidebar__options">  
         <IconButton onClick={() => setOpenDropDown(!openDropDown)}>
           <MoreVert className="options__item" />

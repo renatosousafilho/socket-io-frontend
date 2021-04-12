@@ -1,28 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './styles.scss';
 import Contacts from '../../../../utils/data';
+import socketClient from '../../../../utils/socketClient';
 
-// import Contacts from '../../../../utils/data';
 import Contact from '../../../../components/Contact';
 
 function Chats() {
+  const [contacts, setContacts] = useState([]);
+
+
+  useEffect(() => {
+    setContacts(Contacts);
+    socketClient.on("chat.updateUsers", (data) => {
+      const contacts = data
+        .map(d => ({ id: d.socketId, name: d.username, avatar: d.avatar, socketId: d.socketId }))
+        .filter(c => c.socketId !== socketClient.id );
+
+      setContacts(contacts);
+    });
+  }, []);
+
+
   return (
     <div className="sidebar__chats">
-      {Contacts.map(({
-      id, name, avatar, lastMessage, timeLastMessage, lastSeen, pinned, mute, unreadMessages,
+      {contacts.map(({
+      id, name, avatar
     }) => (
       <Contact
         key={id}
         id={id}
         name={name}
         avatar={avatar}
-        lastMessage={lastMessage}
-        timeLastMessage={timeLastMessage}
-        lastSeen={lastSeen}
-        pinned={pinned}
-        mute={mute}
-        unreadMessages={unreadMessages}
       />
     ))}
     </div>

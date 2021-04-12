@@ -15,15 +15,7 @@ function Home() {
   const { setCurrentUsers } = useContext(UsersContext);
 
   useEffect(() => {
-    // console.log('voltou');
-    // console.log(currentUser);
-    socketClient.on("chat.updateUsers", (data) => {
-      const me = data.find((u) => u.socketId === socketClient.id);
-      if (me) setCurrentUser(me.username);
-      const updatedUsers = data.filter((u) => u.socketId !== socketClient.id);
-      setUsers(updatedUsers);
-      setCurrentUsers(data);
-    });
+
   }, [setCurrentUsers]);
 
   return (
