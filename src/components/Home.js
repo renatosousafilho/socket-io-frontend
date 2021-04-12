@@ -12,13 +12,8 @@ function Home() {
   const [users, setUsers] = useState([]);
   
   useEffect(() => {
-    // setUsers(data);
-    console.log('passou aqui!!!')
-    
     socketClient.on("chat.updateUsers", (data) => {
-      console.log(socketClient.id);
       const updatedUsers = data.filter((u) => u.socketId !== socketClient.id);
-      console.log(updatedUsers);
       setUsers(updatedUsers);
     });
   }, []);
