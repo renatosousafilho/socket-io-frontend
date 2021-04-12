@@ -1,48 +1,52 @@
 import React, { useEffect, useState } from 'react';
+import socketClient from '../utils/socketClient';
 
 import './Home.css';
 
 import data from '../data';
 
 import UserItem from './UserItem'
+import Form from './Form'
 
 function Home() {
   const [users, setUsers] = useState([]);
-
+  
   useEffect(() => {
-    setUsers(data);
+    // setUsers(data);
+    console.log('passou aqui!!!')
+    
+    socketClient.on("chat.updateUsers", (data) => {
+      console.log(socketClient.id);
+      const updatedUsers = data.filter((u) => u.socketId !== socketClient.id);
+      console.log(updatedUsers);
+      setUsers(updatedUsers);
+    });
   }, []);
 
 
   return (
     <>
-      <div class="phone-status-bar">
-        <h1 class="heading-primary">WhatsApp</h1>
-        <div class="phone-status-bar__right-icon">
-          <i class="fa fa-search" aria-hidden="true"></i>
-          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+      <div className="phone-status-bar">
+        <h1 className="heading-primary">WhatsApp</h1>
+        <div className="phone-status-bar__right-icon">
+          <i className="fa fa-search" aria-hidden="true"></i>
+          <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
         </div>
       </div>
       
-      <div class="menu-bar">
-        <i class="fa fa-camera" aria-hidden="true"></i>
-        <ul class="menu-bar__list">
-          <li class="menu-bar__list-item" onclick="changeTab(1);">Chat</li>
-          <li class="menu-bar__list-item" onclick="changeTab(2);">Status</li>
-          <li class="menu-bar__list-item" onclick="changeTab(3);">Calls</li>
-        </ul>
-      </div>
       
-      <div class="chat-status-call">
-        <div class="chat-container">
-          <div class="contact-list">
-            <i class="material-icons">
+      <div className="chat-status-call">
+        <div className="chat-container">
+          <div className="contact-list">
+            <i className="material-icons">
             chat
             </i>
           </div>
 
+          <Form />
+
           {users.map((user) => (
-            <UserItem {...user} />
+            <UserItem {...user} key={user.username} />
           ))}
         </div>
       </div>

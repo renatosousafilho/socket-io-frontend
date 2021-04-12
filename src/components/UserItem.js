@@ -4,17 +4,17 @@ import React from 'react';
 
 function UserItem(user) {
   return (
-    <a href='/chat/<%= user.id %>' class="chat-list">
-      <div class="person-profile">
+    <a href='/chat/<%= user.id %>' className="chat-list">
+      <div className="person-profile">
         <img
-          src={user.avatar_url}
-          alt="" class="user-img" />
-        <div class="person-name">
-          <h1 class="persion-name-heading">{user.name}</h1>
-          <p class="person-chat">...</p>
+          src={user.avatar}
+          alt="" className="user-img" />
+        <div className="person-name">
+          <h1 className="persion-name-heading">{user.username}</h1>
+          <p className="person-chat">...</p>
         </div>
       </div>
-      <p class="last-chat-time">12:00 pm</p>
+      <p className="last-chat-time">12:00 pm</p>
     </a>
   );
 }
